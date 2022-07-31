@@ -4,6 +4,7 @@ myvenv
 db.sqlite3
 /static
 .DS_Store
+.vscode
 
 #local env
-local_settings.py
+.env
