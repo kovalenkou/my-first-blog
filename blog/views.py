@@ -1,9 +1,10 @@
 from pickle import GET
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.views import View
-
 from django.views.generic import TemplateView, CreateView
+
 
 from blog.models import Post
 
@@ -11,13 +12,11 @@ from blog.models import Post
 class post_list(CreateView):
     template_name = 'blog/post_list.html'
     model = Post
-    fields = ['author', 'title']
+    fields = ['author', 'title', 'text', 'created_date', 'published_date']
+    
+    def get(self, request):
+        posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+        return render(request, 'blog/post_list.html', {'posts': posts} )
 
-    # def post_list(self, request):
-    #     return render(request, 'blog/post_list.html', {})
-
-    # def get(self, request):
-    #    return HttpResponse('Class based view')
-
-    # def post(self, request):
-    #   return HttpResponse('Class based view')
+    def post(self, request):
+      return HttpResponse('Class based view')
